@@ -1,18 +1,42 @@
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import './AboutUs.css'
 
 const AboutMe = props => {
-  return (
-    <>
-      <h1>A Quick Introduction</h1>
+    const [body, setBody] = useState('')
+    const [img, setImg] = useState('')
 
-      <img src = "https://cdn.discordapp.com/attachments/593187505403199490/1075369534862659634/IMG_0186.jpg" style = {{width: '200px', height: '250px' }}/> 
-      <p>Hello there! My name is Mathew Pan and I am originally from China, but I immigrated to the United States when I was 8 years old. I enjoy various activities such 
-      as reading, biking, and playing games. I'm studying CS because I like the feeling of spending time building something and seeing it all come together at the end. In this
-      class I hope to learn about the process fo app building and gain experience of building one on my own. 
-        </p>
 
-    </>
-  )
+    const getAbout = () =>{
+    
+    axios
+      // get new message to server
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/AboutMe`)
+      .then(response => {
+        console.log(response.data.body)
+        setBody(response.data.body)
+        setImg(response.data.img)
+      })
+    }
+
+    useEffect(() => {
+        getAbout()
+    },[])
+
+
+    return(
+        <>
+        <img src = {img} style = {{width: '200px', height: '250px' }}/> 
+        <p>{body}</p>
+        </>
+        
+        
+
+
+
+         
+        
+    )
 }
  
 // make this component available to be imported into any other file
